@@ -1,0 +1,45 @@
+import requests
+API_KEY = ''  # Replace with your actual API key
+def fetch_news(country='us', category=None, query=None):
+    # url = 'https://newsapi.org/v2/top-headlines'
+    url = ' https://newsapi.org/v2/top-headlines?country=us&apiKey='
+    # url = 'https://newsapi.org/v2/top-headlines/sources?country=usapiKey='
+
+    params = {
+        'country': country,
+        'apiKey': API_KEY
+    }
+    if category:
+        params['category'] = category
+    if query:
+        params['q'] = query
+
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        articles = data.get('articles', [])
+        if not articles:
+            print("No articles found.")
+        else:
+            print(f"Top news for '{category or query}' in {country.upper()}:")
+            for idx, article in enumerate(articles, 1):
+                print(f"{idx}. {article.get('title')}")
+    else:
+        print("Failed to fetch news:", response.status_code, response.text)
+        
+
+if __name__ == "__main__":
+    print("Choose a topic:")
+    print("1. business")
+    print("2. general")
+    print("3. technology") 
+    choice = input("Enter your choice (1/2/3): ").strip()
+
+    if choice == '1':
+        fetch_news(category='Business')
+    elif choice == '2':
+        fetch_news(category='general')
+    elif choice == '3':
+        fetch_news(category=None, query='technology')
+    else:
+        print("Invalid choice.") 
