@@ -1,0 +1,16 @@
+import win32com.client as wincl
+
+speaker_number = 0  # Use 0 if only one voice is installed
+spk = wincl.Dispatch("SAPI.SpVoice")
+vcs = spk.GetVoices()
+
+if speaker_number < vcs.Count:
+    print(vcs.Item(speaker_number).GetAttribute("Name"))  # speaker name
+    # spk.SetVoice(vcs.Item(speaker_number))  # set voice
+    spk.Voice = vcs.Item(speaker_number)  # set voice
+else:
+    print("Speaker number out of range, using default voice.")
+
+names = ["akshit"]
+for name in names:
+    spk.Speak("tere papa maarenge " + name)
