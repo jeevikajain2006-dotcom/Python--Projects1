@@ -1,0 +1,37 @@
+import time
+from plyer import notification
+import winsound
+import win32com.client as wincom
+
+# --- Configuration ---
+# The time interval in seconds between reminders.
+# 1 hour = 3600 seconds
+# 1.5 hours = 5400 seconds
+# 2 hours = 7200 seconds
+REMINDER_INTERVAL_SECONDS =3600
+speaker = wincom.Dispatch("SAPI.SpVoice")
+# --- Main Program Loop ---
+print("Water reminder program started.")
+# print(f"You will receive a reminder every {REMINDER_INTERVAL_SECONDS // 3600} hour(s).")
+print("Press Ctrl+C to stop the program at any time.")
+
+while True:
+    # Wait for the specified interval.
+    time.sleep(REMINDER_INTERVAL_SECONDS)
+
+    # --- Send a desktop notification ---
+    # The 'plyer' library will automatically choose the correct
+    # notification method for your operating system (Windows, macOS, or Linux).
+    notification.notify(
+        title='💧 Time to Drink Water!',
+        message='Stay hydrated! Your body will thank you.',
+        app_name='Water Reminder',
+        # Set a timeout for the notification in seconds.
+        # Set to 0 to keep it persistent until dismissed.
+        timeout=10
+    )
+
+    # You can als   speaker.Speak("Drink the water!")o add a beep sound as an alternative or in addition to the notification.
+    # The 'winsound' module is for Windows only.
+    winsound.Beep(440, 500) # Play a beep sound (frequency, duration)
+    speaker.Speak("Drink the water!")
